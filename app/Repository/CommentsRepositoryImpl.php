@@ -9,8 +9,16 @@ use Exception;
 
 class CommentsRepositoryImpl implements ICommentsRepository{
 
-    public function getCommentsById($CommentsData, $Comments, $CommentsDetails)
+    public function getCommentsByUserId($userId)
     {
         return true;
+    }
+
+    public function addComment($comment, $userId, $replyTo){
+        return  Comments::create([
+            'comment' => $comment,
+            'userId' => $userId,
+            'replyTo' => $replyTo
+        ]);
     }
 }

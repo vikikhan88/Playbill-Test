@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\IContacts\IUsersService;
 use App\Services\IContacts\ICommentsService;
+use App\Http\Requests\CommentRequest;
 
 class CommentsController extends Controller
 {
@@ -29,6 +30,26 @@ class CommentsController extends Controller
         $this->__usersService   = $__usersService;
         $this->__commentsService = $__commentsService;
 
+    }
+
+    public function addComment(CommentRequest $request){
+        try {
+
+            $user = Auth::user();
+
+            $this->__commentsService->add($request, $user);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Comment Added Successfully'
+            ], Response::HTTP_OK);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

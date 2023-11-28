@@ -4,5 +4,8 @@ namespace App\Repository\IContacts;
 
 interface ICommentsRepository
 {
-    public function getCommentsById($CommentsData, $Comments, $CommentsDetails);
+    public function getCommentsByUserId($userId);
+
+    public function addComment($comment, $userId, $replyTo);
+
 }

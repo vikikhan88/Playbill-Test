@@ -10,12 +10,19 @@ use Illuminate\Support\Facades\File;
 
 class CommentsServiceImpl implements ICommentsService
 {
-    private $commentsRepo;
-    public function __construct(ICommentsRepository $commentsRepo){
-        $this->commentsRepo = $commentsRepo;
+    private $__commentsRepo;
+    public function __construct(ICommentsRepository $__commentsRepo){
+        $this->__commentsRepo = $__commentsRepo;
     }
 
-    public function add($request, $user){}
+    public function add($request, $user){
+
+        $comment = $request->comments;
+        $userId = $user->id;
+        $replyTo = $request->replyTo ?? "";
+
+        return $this->__commentsRepo->addComment($comment, $userId, $replyTo);
+    }
     public function get($request, $user){}
     public function update($commentId, $request, $user){}
     public function delete($commentId, $user){}

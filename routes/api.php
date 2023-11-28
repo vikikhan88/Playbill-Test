@@ -26,5 +26,5 @@ Route::post('/auth/register', [AuthController::class, 'create']);
 Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/user', [AuthController::class, 'currentUser']);
     Route::get('/user/search/', [UserController::class, 'getUser']);
-    Route::post('/comments', [CommentsController::class, 'index']);
+    Route::post('/comments', [CommentsController::class, 'addComment']);
 });
