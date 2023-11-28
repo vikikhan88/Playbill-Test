@@ -24,7 +24,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'create']);
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
-    Route::get('user', [AuthController::class, 'currentUser']);
-    Route::get('user/{email}', [UserController::class, 'getUser']);
-    Route::post('comments', [CommentsController::class, 'index']);
+    Route::get('/user', [AuthController::class, 'currentUser']);
+    Route::get('/user/search/', [UserController::class, 'getUser']);
+    Route::post('/comments', [CommentsController::class, 'index']);
 });

@@ -33,7 +33,7 @@ class UsersServiceImpl implements IUsersService
 
     public function findUser($request){
         $email = $request->email;
-        $userData = $this->__usersRepo->getUserByEmail( $email);
+        $userData = $this->__usersRepo->getUserByEmail($email);
         return $userData;
     }
 }

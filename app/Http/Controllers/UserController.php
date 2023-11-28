@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\IContacts\IUsersService;
-use App\Services\IContacts\ICommentsService;
 
 class UserController extends Controller
 {
@@ -27,8 +26,7 @@ class UserController extends Controller
 
     }
 
-    public function getUser(Request $request,string  $email){
-        dd($request->all(), $request->input('email'));
+    public function getUser(Request $request){
         try {
             //Validated
             $validateUser = Validator::make(
@@ -46,9 +44,16 @@ class UserController extends Controller
 
             $searchResults = $this->__usersService->findUser($request);
 
+            if(empty($searchResults)){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User Not found'
+                ], Response::HTTP_NOT_FOUND);
+            }
+
             return response()->json([
                 'status' => true,
-                'message' => 'User find Successfully',
+                'message' => 'User found Successfully',
                 'user' => Auth::user(),
             ], Response::HTTP_OK);
 

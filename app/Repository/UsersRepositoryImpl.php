@@ -15,7 +15,7 @@ class UsersRepositoryImpl implements IUsersRepository{
     }
 
     public function getUserByEmail($email){
-        return User::where('email', $email)->first();
+        return User::where('email', '=', $email)->first();
     }
 
     public function createUser($request){
