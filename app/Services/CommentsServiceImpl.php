@@ -16,10 +16,9 @@ class CommentsServiceImpl implements ICommentsService
     }
 
     public function add($request, $user){
-
-        $comment = $request->comments;
+        $comment = $request->comment;
         $userId = $user->id;
-        $replyTo = $request->replyTo ?? "";
+        $replyTo = $request->replyTo ?? 0;
 
         return $this->__commentsRepo->addComment($comment, $userId, $replyTo);
     }

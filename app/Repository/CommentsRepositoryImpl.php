@@ -16,9 +16,9 @@ class CommentsRepositoryImpl implements ICommentsRepository{
 
     public function addComment($comment, $userId, $replyTo){
         return  Comments::create([
-            'comment' => $comment,
-            'userId' => $userId,
-            'replyTo' => $replyTo
+            'comments' => $comment,
+            'user_id' => $userId,
+            'reply_to' => $replyTo
         ]);
     }
 }
