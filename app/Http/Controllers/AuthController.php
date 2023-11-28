@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\IContacts\IUsersService;
 use App\Services\IContacts\ICommentsService;
+use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\LoginRequest;
 class AuthController extends Controller
 {
     private $__usersService;
@@ -36,26 +37,10 @@ class AuthController extends Controller
      * @param Request $request
      * @return User
      */
-    public function create(Request $request)
+    public function create(UserCreateRequest $request)
     {
         try {
-            //Validated
-            $validateUser = Validator::make($request->all(),
-            [
-                'name' => 'required',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required'
-            ]);
-
-            if($validateUser->fails()){
-                return response()->json([
-                    'status' => false,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
-                ], Response::HTTP_UNAUTHORIZED);
-            }
-
-            $user = $this->__usersService->findUser($request);
+            $user = $this->__usersService->create($request);
 
             return response()->json([
                 'status' => true,
@@ -76,22 +61,9 @@ class AuthController extends Controller
      * @param Request $request
      * @return User
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         try {
-            $validateUser = Validator::make($request->all(),
-            [
-                'email' => 'required|email',
-                'password' => 'required'
-            ]);
-
-            if($validateUser->fails()){
-                return response()->json([
-                    'status' => false,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
-                ], Response::HTTP_UNAUTHORIZED);
-            }
 
             if(!Auth::attempt($request->only(['email', 'password']))){
                 return response()->json([
@@ -114,5 +86,15 @@ class AuthController extends Controller
                 'message' => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function currentUser(){
+        $user = Auth::user();
+        return response()->json([
+            'status' => true,
+            'message' => 'User Logged In Successfully',
+            'user' => $user,
+            'token' => $user->createToken("API TOKEN")->plainTextToken
+        ], Response::HTTP_OK);
     }
 }

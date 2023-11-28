@@ -20,7 +20,7 @@ class UsersServiceImpl implements IUsersService
     }
 
     public function create($request){
-
+        return $this->__usersRepo->createUser($request);
     }
 
     public function update($request, $userId){
@@ -34,7 +34,6 @@ class UsersServiceImpl implements IUsersService
     public function findUser($request){
         $email = $request->email;
         $userData = $this->__usersRepo->getUserByEmail( $email);
-        dd($userData);
         return $userData;
     }
 }
